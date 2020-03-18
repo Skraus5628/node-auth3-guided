@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"server": "nodemon index.js",
+		"server": "nodemon -r dotenv/config index.js",
 		"start": "node index.js"
 	},
 	"devDependencies": {
@@ -14,8 +14,10 @@
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
 		"helmet": "^3.21.2",
+		"install": "^0.13.0",
 		"jsonwebtoken": "^8.5.1",
 		"knex": "^0.20.4",
+		"npm": "^6.14.2",
 		"sqlite3": "^4.1.1"
 	}
 }

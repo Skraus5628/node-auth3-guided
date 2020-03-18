@@ -1,5 +1,6 @@
 const express = require("express")
 const bcrypt = require("bcryptjs")
+const jwt = require('jsonwebtoken')
 const Users = require("../users/users-model")
 const restrict = require("../middleware/restrict")
 
@@ -35,13 +36,26 @@ router.post("/login", async (req, res, next) => {
 			return res.status(401).json(authError)
 		}
 
-		const passwordValid = await bcrypt.compare(password, user.password)
-		if (!passwordValid) {
-			return res.status(401).json(authError)
+		// const passwordValid = await bcrypt.compare(password, user.password)
+		// if (!passwordValid) {
+		// 	return res.status(401).json(authError)
+		// }
+
+		const payload = {
+			userId: user.id,
+			userRole: "normal", 
+			// this would normally come from a db
 		}
+
+		// generate a new JWT
+		const token = jwt.sign(payload, process.env.JWT_SECRET)
+
+		// sends a set-cookie header with the value of the token
+		res.cookie("token", token)
 
 		res.json({
 			message: `Welcome ${user.username}!`,
+			token: token,
 		})
 	} catch(err) {
 		next(err)
